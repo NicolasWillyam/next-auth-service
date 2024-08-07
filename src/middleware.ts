@@ -14,6 +14,8 @@ export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
+  console.log("LOGIN :", isLoggedIn);
+
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
@@ -32,7 +34,7 @@ export default auth((req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    // return Response.redirect(new URL("/auth/login", nextUrl));
+    return Response.redirect(new URL("/auth/login", nextUrl));
   }
 
   // return null; => Returns a valid Response object or 'undefined' instead of 'null'.

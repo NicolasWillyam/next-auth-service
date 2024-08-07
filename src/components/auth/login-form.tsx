@@ -23,8 +23,14 @@ import { FaGithub } from "react-icons/fa";
 import { FaKey } from "react-icons/fa6";
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { useSearchParams } from "next/navigation";
 
 const LoginForm = () => {
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "Email already in use with different provider!"
+      : "";
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -49,8 +55,9 @@ const LoginForm = () => {
     startTransition(() => {
       login(values).then((data) => {
         if (data) {
-          setError(data.error);
-          // setSuccess(data.success);
+          setError(data?.error);
+          // TODO: Add when we add 2FA
+          setSuccess(data?.success);
         }
       });
     });
@@ -107,7 +114,7 @@ const LoginForm = () => {
                 )}
               ></FormField>
             </div>
-            <FormError message={error} />
+            <FormError message={error || urlError} />
             <FormSuccess message={success} />
             <Button
               disabled={isPending}

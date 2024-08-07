@@ -4,6 +4,7 @@ import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import Header from "@/components/auth/header";
 import Social from "@/components/auth/social";
 import BackButton from "@/components/auth/back-button";
+import CardWrapperFooter from "./card-wrapper-footer";
 
 interface CardWrapperProps {
   children: React.ReactNode;
@@ -36,12 +37,7 @@ const CardWrapper = ({
           <BackButton label={backButtonLabel} href={backButtonHref} />
         </CardFooter>
       </Card>
-      <div className="text-xs text-destructive text-center mt-14">
-        Your name and photo are displayed to users who invite you to a workspace
-        using your email. By continuing, you acknowledge that you understand and
-        agree to the <span className="text-white/70">Terms & Conditions</span>{" "}
-        and <span className="text-white/70">Privacy Policy</span>
-      </div>
+      <CardWrapperFooter />
     </div>
   );
 };
