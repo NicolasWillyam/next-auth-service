@@ -1,7 +1,7 @@
 "use client";
 import React, { startTransition, useState, useTransition } from "react";
 import CardWrapper from "./card-wrapper";
-import { RegisterSchema } from "@/schemas";
+import { RegisterSchema } from "../../schemas";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,8 +17,8 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
-import { login } from "@/actions/login";
-import { register } from "@/actions/register";
+import { login } from "../../actions/login";
+import { register } from "../../actions/register";
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");

@@ -2,15 +2,15 @@
 
 import * as z from "zod";
 
-import { LoginSchema } from "@/schemas";
+import { LoginSchema } from "../schemas";
 
 import NextAuth, { AuthError } from "next-auth";
-import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { getUserByEmail } from "@/data/user";
+import { signIn } from "../auth";
+import { DEFAULT_LOGIN_REDIRECT } from "../routes";
+import { getUserByEmail } from "../data/user";
 import { error } from "console";
-import { generateVerificationToken } from "@/lib/tokens";
-import { sendVerificationEmail } from "@/lib/mail";
+import { generateVerificationToken } from "../lib/tokens";
+import { sendVerificationEmail } from "../lib/mail";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values);
