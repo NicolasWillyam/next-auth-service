@@ -21,6 +21,7 @@ import { login } from "../../actions/login";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { FaKey } from "react-icons/fa6";
+import { FaArrowRightLong } from "react-icons/fa6";
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "../../routes";
 import { useSearchParams } from "next/navigation";
@@ -52,7 +53,6 @@ const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
     setError("");
     setSuccess("");
-    console.log(values);
     startTransition(() => {
       login(values).then((data) => {
         if (data) {

@@ -24,7 +24,6 @@ export const newPassword = async (
   const { password } = validatedFields.data;
 
   const existingToken = await getPasswordResetTokenByToken(token);
-  console.log("existingToken: ", existingToken);
 
   if (!existingToken) {
     return { error: "Token does not exist!" };

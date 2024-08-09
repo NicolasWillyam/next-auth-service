@@ -7,9 +7,11 @@ export default function Home() {
     <main className="w-full flex h-screen items-center justify-center bg-[#191919]">
       <div className="flex flex-col items-center space-y-6">
         <h1 className={cn("text-6xl font-medium text-white drop-shadow-sm")}>
-          Auth
+          Next AuthJS
         </h1>
-        <p className="text-white text-lg">A simple authenciation service</p>
+        <p className="text-white text-lg font-light">
+          A simple authentication service created by NextJs and AuthJs
+        </p>
         <div>
           <LoginButton>
             <Button variant={"secondary"} size={"lg"}>

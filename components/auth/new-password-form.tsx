@@ -26,7 +26,6 @@ import { useSearchParams } from "next/navigation";
 const NewPasswordForm = () => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  console.log("token: ", token);
 
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");

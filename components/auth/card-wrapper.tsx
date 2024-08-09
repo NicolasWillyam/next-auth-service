@@ -37,7 +37,7 @@ const CardWrapper = ({
           <BackButton label={backButtonLabel} href={backButtonHref} />
         </CardFooter>
       </Card>
-      <CardWrapperFooter />
+      {showSocial && <CardWrapperFooter />}
     </div>
   );
 };

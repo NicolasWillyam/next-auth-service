@@ -1,12 +1,13 @@
-import NewVerificationForm from "@/components/auth/new-erification-form";
+import NewVerificationForm from "@/components/auth/new-verification-form";
+import SuspenseFallback from "@/components/suspense-fallback";
 import React from "react";
 import { Suspense } from "react";
 
 const NewVerificationPage = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <SuspenseFallback>
       <NewVerificationForm />
-    </Suspense>
+    </SuspenseFallback>
   );
 };
 
