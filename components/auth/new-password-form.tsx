@@ -1,7 +1,7 @@
 "use client";
 import React, { startTransition, useState, useTransition } from "react";
 import CardWrapper from "./card-wrapper";
-import { LoginSchema } from "../../schemas";
+import { LoginSchema, NewPasswordSchema } from "../../schemas";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,47 +17,34 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
-import { login } from "../../actions/login";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
-import { FaKey } from "react-icons/fa6";
+import { newPassword } from "../../actions/new-password";
+
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "../../routes";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 
-const LoginForm = () => {
+const NewPasswordForm = () => {
   const searchParams = useSearchParams();
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
-      ? "Email already in use with different provider!"
-      : "";
+  const token = searchParams.get("token");
+  console.log("token: ", token);
+
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      email: "",
       password: "",
     },
   });
 
-  const onClick = (provider: "google" | "github") => {
-    signIn(provider, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
-    });
-  };
-
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
     setError("");
     setSuccess("");
-    console.log(values);
     startTransition(() => {
-      login(values).then((data) => {
+      newPassword(values, token).then((data) => {
         if (data) {
           setError(data?.error);
-          // TODO: Add when we add 2FA
           setSuccess(data?.success);
         }
       });
@@ -65,37 +52,15 @@ const LoginForm = () => {
   };
   return (
     <CardWrapper
-      headerLabel="Sign in to use Notion"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/register"
-      showSocial
+      headerLabel="Enter new password"
+      backButtonLabel="Back to login"
+      backButtonHref="/auth/login"
+      // showSocial
     >
       <div className="flex flex-col gap-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <div className="space-y-4 text-destructive">
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-normal">Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="user@example.com"
-                        type="email"
-                      />
-                    </FormControl>
-                    {/* <p className="text-xs leading-tighter">
-                      Use an organization email to easily collaborate with
-                      teammates
-                    </p> */}
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
               <FormField
                 control={form.control}
                 name="password"
@@ -110,20 +75,16 @@ const LoginForm = () => {
                         type="password"
                       />
                     </FormControl>
-                    <Button
-                      size="sm"
-                      variant="link"
-                      asChild
-                      className="px-0 text-destructive text-xs"
-                    >
-                      <Link href="/auth/reset">Forgot password?</Link>
-                    </Button>
+                    {/* <p className="text-xs leading-tighter">
+                      Use an organization email to easily collaborate with
+                      teammates
+                    </p> */}
                     <FormMessage />
                   </FormItem>
                 )}
               ></FormField>
             </div>
-            <FormError message={error || urlError} />
+            <FormError message={error} />
             <FormSuccess message={success} />
             <Button
               disabled={isPending}
@@ -134,7 +95,7 @@ const LoginForm = () => {
             </Button>
           </form>
         </Form>
-        <div className="flex flex-col gap-2.5 px-2.5">
+        {/* <div className="flex flex-col gap-2.5 px-2.5">
           <div className="h-[1px] w-full bg-white/10 my-2.5" />
           <Button
             size={"sm"}
@@ -154,10 +115,10 @@ const LoginForm = () => {
             <FaGithub size={16} />
             Continue with Github
           </Button>
-        </div>
+        </div> */}
       </div>
     </CardWrapper>
   );
 };
 
-export default LoginForm;
+export default NewPasswordForm;
