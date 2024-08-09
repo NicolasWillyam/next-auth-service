@@ -33,10 +33,15 @@ const config = {
         //   DEFAULT: "hsl(var(--secondary))",
         //   foreground: "hsl(var(--secondary-foreground))",
         // },
-        primary: "#191919",
+        primary: {
+          DEFAULT: "#191919",
+          light: "#ffffff",
+        },
+        primaryLight: "#ffffff",
         secondary: "#202020",
         destructive: "#777777",
         link: "#2383E2",
+        hover: "rgb(0 0 0 / 0.05)",
 
         // destructive: {
         //   DEFAULT: "hsl(var(--destructive))",

@@ -58,8 +58,8 @@ const NewPasswordForm = () => {
     >
       <div className="flex flex-col gap-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-4 text-destructive">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <div className="space-y-2 text-destructive mb-2">
               <FormField
                 control={form.control}
                 name="password"

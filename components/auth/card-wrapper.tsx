@@ -22,20 +22,13 @@ const CardWrapper = ({
   showSocial,
 }: CardWrapperProps) => {
   return (
-    <div className="w-[400px] mb-10">
-      <Card className="shadow-xl bg-secondary border border-white/10 rounded-[20px] text-white">
-        <CardHeader className="pt-10 pb-5">
+    <div className="w-[320px] mb-10">
+      <Card className="p-0 grid grid-cols-1 gap-4 ">
+        <CardHeader className="p-0">
           <Header label={headerLabel} />
         </CardHeader>
-        <CardContent className="px-10">{children}</CardContent>
-        {/* {showSocial && (
-            <CardFooter>
-            <Social />
-            </CardFooter>
-        )} */}
-        <CardFooter className="pb-8">
-          <BackButton label={backButtonLabel} href={backButtonHref} />
-        </CardFooter>
+        <CardContent className="p-0 mt-4">{children}</CardContent>
+        <BackButton label={backButtonLabel} href={backButtonHref} />
       </Card>
       {showSocial && <CardWrapperFooter />}
     </div>

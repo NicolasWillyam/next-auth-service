@@ -19,6 +19,7 @@ import FormError from "../form-error";
 import FormSuccess from "../form-success";
 import { login } from "../../actions/login";
 import { register } from "../../actions/register";
+import { Spinner } from "../spinner";
 
 const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -51,14 +52,14 @@ const RegisterForm = () => {
       showSocial
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-          <div className="space-y-4 text-destructive">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+          <div className="space-y-2 text-destructive mb-2">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-normal">Name</FormLabel>
+                  <FormLabel className="font-normal text-xs">Name</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -75,7 +76,7 @@ const RegisterForm = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-normal">Email</FormLabel>
+                  <FormLabel className="font-normal text-xs">Email</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -93,7 +94,9 @@ const RegisterForm = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-normal">Password</FormLabel>
+                  <FormLabel className="font-normal text-xs">
+                    Password
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -107,15 +110,21 @@ const RegisterForm = () => {
               )}
             ></FormField>
           </div>
-          <FormError message={error} />
-          <FormSuccess message={success} />
           <Button
             disabled={isPending}
             type="submit"
             className="w-full text-white"
           >
-            Create an account
+            {isPending ? (
+              <>
+                <Spinner className="mr-2" />
+              </>
+            ) : (
+              "Create an account"
+            )}
           </Button>
+          <FormError message={error} />
+          <FormSuccess message={success} />
         </form>
       </Form>
     </CardWrapper>

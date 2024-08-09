@@ -4,17 +4,17 @@ import { cn } from "../lib/utils";
 
 export default function Home() {
   return (
-    <main className="w-full flex h-screen items-center justify-center bg-[#191919]">
+    <main className="w-full flex h-screen items-center justify-center">
       <div className="flex flex-col items-center space-y-6">
-        <h1 className={cn("text-6xl font-medium text-white drop-shadow-sm")}>
+        <h1 className={cn("text-6xl font-medium drop-shadow-sm")}>
           Next AuthJS
         </h1>
-        <p className="text-white text-lg font-light">
+        <p className="text-lg text-black/50 font-light">
           A simple authentication service created by NextJs and AuthJs
         </p>
         <div>
           <LoginButton>
-            <Button variant={"secondary"} size={"lg"}>
+            <Button className="text-white" size={"lg"}>
               Sign in
             </Button>
           </LoginButton>

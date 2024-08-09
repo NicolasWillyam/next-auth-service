@@ -21,6 +21,7 @@ import { reset } from "../../actions/reset";
 
 import { signIn } from "next-auth/react";
 import { DEFAULT_LOGIN_REDIRECT } from "../../routes";
+import { Spinner } from "../spinner";
 
 const ResetForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -60,8 +61,8 @@ const ResetForm = () => {
     >
       <div className="flex flex-col gap-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="space-y-4 text-destructive">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+            <div className="space-y-2 text-destructive mb-2">
               <FormField
                 control={form.control}
                 name="email"
@@ -92,31 +93,16 @@ const ResetForm = () => {
               type="submit"
               className="w-full text-white"
             >
-              Continue
+              {isPending ? (
+                <>
+                  <Spinner className="mr-2" />
+                </>
+              ) : (
+                "Continue"
+              )}
             </Button>
           </form>
         </Form>
-        {/* <div className="flex flex-col gap-2.5 px-2.5">
-          <div className="h-[1px] w-full bg-white/10 my-2.5" />
-          <Button
-            size={"sm"}
-            className="w-full flex items-center gap-2"
-            variant={"outline"}
-            onClick={() => onClick("google")}
-          >
-            <FcGoogle size={16} />
-            Continue with Google
-          </Button>
-          <Button
-            size={"sm"}
-            className="w-full flex items-center gap-2"
-            variant={"outline"}
-            onClick={() => onClick("github")}
-          >
-            <FaGithub size={16} />
-            Continue with Github
-          </Button>
-        </div> */}
       </div>
     </CardWrapper>
   );

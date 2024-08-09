@@ -64,6 +64,6 @@
     @apply border-border;
   }
   body {
-    @apply bg-primary text-white;
+    @apply bg-primary-light text-black;
   }
 }
