@@ -6,8 +6,12 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import authConfig from "./auth.config";
 import { db } from "./lib/db";
 import { getUserByID } from "./data/user";
+import { User as NextAuthUser } from "next-auth";
 import { UserRole } from "@prisma/client";
 
+interface CustomUser extends NextAuthUser {
+  role?: UserRole; // Add the role property as optional
+}
 export const { auth, handlers, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/auth/login",
@@ -26,9 +30,14 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       // Allow OAuth without email verification
       if (account?.provider !== "credentials") return true;
 
-      const existingUser = await getUserByID(user.id);
+      const userID = user.id;
 
-      // The user who not verified will be block from log in
+      // Ensure userID is defined before proceeding
+      if (!userID) return false;
+
+      const existingUser = await getUserByID(userID);
+
+      // The user who has not verified will be blocked from logging in
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
 
@@ -40,9 +49,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         session.user.id = token.sub;
       }
 
+      // Type assertion to tell TypeScript that session.user is of type CustomUser
       if (token.role && session.user) {
-        session.user.role = token.role as UserRole;
+        (session.user as CustomUser).role = token.role as UserRole;
       }
+
       return session;
     },
 
