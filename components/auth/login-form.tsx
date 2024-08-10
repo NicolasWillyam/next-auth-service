@@ -1,7 +1,7 @@
 "use client";
 import React, { startTransition, useState, useTransition } from "react";
 import CardWrapper from "./card-wrapper";
-import { LoginSchema } from "@/schemas";
+import { LoginSchema } from "../../schemas";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,12 +17,12 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import FormError from "../form-error";
 import FormSuccess from "../form-success";
-import { login } from "@/actions/login";
+import { login } from "../../actions/login";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
 import { FaKey } from "react-icons/fa6";
 import { signIn } from "next-auth/react";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { DEFAULT_LOGIN_REDIRECT } from "../../routes";
 import { useSearchParams } from "next/navigation";
 
 const LoginForm = () => {
