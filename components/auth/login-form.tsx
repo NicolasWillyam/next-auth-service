@@ -34,6 +34,8 @@ const LoginForm = () => {
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email already in use with different provider!"
       : "";
+
+  const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
   const [isPending, startTransition] = useTransition();
@@ -55,13 +57,23 @@ const LoginForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values).then((data) => {
-        if (data) {
-          setError(data?.error);
-          // TODO: Add when we add 2FA
-          setSuccess(data?.success);
-        }
-      });
+      login(values)
+        .then((data) => {
+          if (data?.error) {
+            form.reset();
+            setError(data.error);
+          }
+
+          if (data?.success) {
+            form.reset();
+            setError(data.success);
+          }
+
+          if (data?.twoFactor) {
+            setShowTwoFactor(true);
+          }
+        })
+        .catch(() => setError("Some thing went wrong!"));
     });
   };
   return (
@@ -69,7 +81,7 @@ const LoginForm = () => {
       headerLabel="Create your account"
       backButtonLabel="Don't have an account?"
       backButtonHref="/auth/register"
-      showSocial
+      // showSocial
     >
       <div className="flex flex-col gap-4 ">
         <div className="flex flex-col gap-2">
@@ -104,21 +116,20 @@ const LoginForm = () => {
         <div className="h-[1px] w-full bg-black/10 mt-1"></div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-            <div className="space-y-2 text-destructive">
+            {showTwoFactor && (
               <FormField
                 control={form.control}
-                name="email"
+                name="code"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="font-normal text-xs">
-                      Enter your email address
+                      Enter Two Factor Code
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
                         disabled={isPending}
-                        placeholder="user@example.com"
-                        type="email"
+                        placeholder="123456"
                       />
                     </FormControl>
                     {/* <p className="text-xs leading-tighter">
@@ -129,35 +140,63 @@ const LoginForm = () => {
                   </FormItem>
                 )}
               ></FormField>
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="font-normal text-xs">
-                      Enter your password
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        {...field}
-                        disabled={isPending}
-                        placeholder="******"
-                        type="password"
-                      />
-                    </FormControl>
-                    <Button
-                      size="sm"
-                      variant="link"
-                      asChild
-                      className="px-0 text-destructive text-xs hover:text-link"
-                    >
-                      <Link href="/auth/reset">Forgot password?</Link>
-                    </Button>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              ></FormField>
-            </div>
+            )}
+            {!showTwoFactor && (
+              <div className="space-y-2 text-destructive">
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-normal text-xs">
+                        Enter your email address
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isPending}
+                          placeholder="user@example.com"
+                          type="email"
+                        />
+                      </FormControl>
+                      {/* <p className="text-xs leading-tighter">
+                      Use an organization email to easily collaborate with
+                      teammates
+                    </p> */}
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="font-normal text-xs">
+                        Enter your password
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          disabled={isPending}
+                          placeholder="******"
+                          type="password"
+                        />
+                      </FormControl>
+                      <Button
+                        size="sm"
+                        variant="link"
+                        asChild
+                        className="px-0 text-destructive text-xs hover:text-link"
+                      >
+                        <Link href="/auth/reset">Forgot password?</Link>
+                      </Button>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                ></FormField>
+              </div>
+            )}
             <Button
               disabled={isPending}
               type="submit"

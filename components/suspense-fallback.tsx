@@ -8,7 +8,11 @@ interface SuspenseFallbackProps {
 }
 
 const SuspenseFallback: React.FC<SuspenseFallbackProps> = ({ children }) => {
-  return <Suspense fallback={<Spinner />}>{children}</Suspense>;
+  return (
+    <Suspense fallback={<Spinner className="text-black" />}>
+      {children}
+    </Suspense>
+  );
 };
 
 export default SuspenseFallback;

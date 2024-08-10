@@ -8,6 +8,7 @@ import { db } from "./lib/db";
 import { getUserByID } from "./data/user";
 import { User as NextAuthUser } from "next-auth";
 import { UserRole } from "@prisma/client";
+import { getTwoFactorConfirmationByUserID } from "@/data/two-factor-confirmation";
 
 interface CustomUser extends NextAuthUser {
   role?: UserRole; // Add the role property as optional
@@ -41,7 +42,22 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
 
-      // TODO: Add 2FA check
+      if (existingUser?.isTwoFactorEnabled) {
+        return true;
+      }
+
+      // TODO: Checking "Invalid credentials", uncomment later
+      // if (existingUser?.isTwoFactorEnabled) {
+      //   const twoFactorConfirmation = await getTwoFactorConfirmationByUserID(
+      //     existingUser.id
+      //   );
+
+      //   if (!twoFactorConfirmation) return false;
+
+      //   await db.twoFactorConfirmation.delete({
+      //     where: { id: twoFactorConfirmation.id },
+      //   });
+      // }
       return true;
     },
     async session({ token, session }) {

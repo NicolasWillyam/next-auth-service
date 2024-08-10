@@ -59,7 +59,9 @@ const RegisterForm = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="font-normal text-xs">Name</FormLabel>
+                  <FormLabel className="font-normal text-xs">
+                    Username
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
