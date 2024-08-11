@@ -1,39 +1,19 @@
+"use client";
 import React from "react";
-import { auth, signOut } from "../../../auth";
-import DataTable from "@/components/data-table"; // Adjust import path
-import SignOutButton from "@/components/auth/sign-out-button";
+import { auth } from "../../../auth";
+import { Button } from "@/components/ui/button";
+import { signOut, useSession } from "next-auth/react";
+import { logout } from "@/actions/logout";
+import { useCurrentUser } from "@/hooks/use-current-user";
 
-const SettingsPage = async () => {
-  const session = await auth();
+const SettingsPage = () => {
+  const user = useCurrentUser();
+  const onClick = () => {
+    // logout(); // Client action
+    signOut(); // Server action
+  };
 
-  // Transform session data into an array of key-value pairs
-  const sessionData = session
-    ? Object.entries(session).flatMap(([key, value]) => {
-        if (typeof value === "object" && value !== null) {
-          return Object.entries(value).map(([nestedKey, nestedValue]) => ({
-            key: `${key}.${nestedKey}`,
-            value:
-              typeof nestedValue === "object"
-                ? JSON.stringify(nestedValue)
-                : nestedValue,
-          }));
-        }
-        return [
-          {
-            key,
-            value: typeof value === "object" ? JSON.stringify(value) : value,
-          },
-        ];
-      })
-    : [];
-
-  return (
-    <div>
-      <h1>Session Information</h1>
-      <DataTable data={sessionData} />
-      <SignOutButton />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default SettingsPage;
