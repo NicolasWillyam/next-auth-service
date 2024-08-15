@@ -60,7 +60,7 @@ const UserButton = () => {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <div className="flex gap-2.5 items-center">
-            <p className="text-sm">{user?.name}</p>
+            <p className="text-sm">Hi, {user?.name}</p>
             <Button
               variant="ghost"
               role="combobox"
