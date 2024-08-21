@@ -30,6 +30,7 @@ import { Spinner } from "../spinner";
 
 const LoginForm = () => {
   const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const urlError =
     searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email already in use with different provider!"
@@ -49,7 +50,7 @@ const LoginForm = () => {
 
   const onClick = (provider: "google" | "github") => {
     signIn(provider, {
-      callbackUrl: DEFAULT_LOGIN_REDIRECT,
+      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
   };
 
@@ -57,7 +58,7 @@ const LoginForm = () => {
     setError("");
     setSuccess("");
     startTransition(() => {
-      login(values)
+      login(values, callbackUrl)
         .then((data) => {
           if (data?.error) {
             form.reset();
@@ -69,6 +70,7 @@ const LoginForm = () => {
             setError(data.success);
           }
 
+          console.log(data?.twoFactor);
           if (data?.twoFactor) {
             setShowTwoFactor(true);
           }

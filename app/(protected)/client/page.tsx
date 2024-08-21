@@ -11,7 +11,7 @@ import SuspenseFallback from "@/components/suspense-fallback";
 const ServerPage = () => {
   const user = useCurrentUser();
 
-  return <UserInfo label={"Server Side"} user={user} />;
+  return <UserInfo label={"Client Side"} user={user} />;
 };
 
 export default ServerPage;

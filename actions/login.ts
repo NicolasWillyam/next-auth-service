@@ -17,7 +17,10 @@ import { sendVerificationEmail, sendTwoFactorTokenEmail } from "../lib/mail";
 import { db } from "@/lib/db";
 import { getTwoFactorConfirmationByUserID } from "@/data/two-factor-confirmation";
 
-export const login = async (values: z.infer<typeof LoginSchema>) => {
+export const login = async (
+  values: z.infer<typeof LoginSchema>,
+  callbackUrl?: string | null
+) => {
   const validatedFields = LoginSchema.safeParse(values);
 
   if (!validatedFields.success) {
@@ -45,10 +48,11 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
-    // console.log("2FA checked open");
+    console.log("2FA checked open");
     if (code) {
       // Verify Code
       const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
+      console.log("twoFactorToken", twoFactorToken);
 
       if (!twoFactorToken) {
         return { error: "Invalid code!" };
@@ -97,17 +101,19 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   }
 
   // TODO: Check again this workflow => Fator 1: Check pass and email or just email => Fator 2: Check code
+
   try {
+    console.log("try");
     await signIn("credentials", {
       email,
       password,
-      redirectTo: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials" };
+          return { error: "Invalid credentials hahaha" };
         default:
           return { error: "Something went wrong!" };
       }

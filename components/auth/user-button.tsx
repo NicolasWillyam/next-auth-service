@@ -59,21 +59,16 @@ const UserButton = () => {
     <>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <div className="flex gap-2.5 items-center">
-            <p className="text-sm">Hi, {user?.name}</p>
-            <Button
-              variant="ghost"
-              role="combobox"
-              aria-expanded={open}
-              className="w-fit justify-between gap-1.5 p-2 h-8 bg-black/10 rounded-full border-hover text-black/50"
-            >
+          <Avatar className="w-8 h-8 cursor-pointer">
+            <AvatarImage src={user?.image || ""} />
+            <AvatarFallback className="bg-link text-white">
               <FaUser size={16} />
-            </Button>
-          </div>
+            </AvatarFallback>
+          </Avatar>
         </PopoverTrigger>
 
-        <PopoverContent className="w-40 p-0 rounded-xl " align="end">
-          <div className="bg-white p-1 rounded-md">
+        <PopoverContent className="w-40 p-0" align="end">
+          <div className="bg-white p-1 rounded-lg">
             <LogoutButton>
               <div className="text-sm px-2.5 py-1.5 rounded-sm hover:bg-hover duration-300 flex items-center gap-2">
                 <ExitIcon />

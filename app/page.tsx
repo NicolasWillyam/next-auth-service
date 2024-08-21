@@ -13,7 +13,7 @@ export default function Home() {
           A simple authentication service created by NextJs and AuthJs
         </p>
         <div>
-          <LoginButton>
+          <LoginButton asChild>
             <Button className="text-white" size={"lg"}>
               Sign in
             </Button>
